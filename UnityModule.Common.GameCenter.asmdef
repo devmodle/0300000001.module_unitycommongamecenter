@@ -1,0 +1,19 @@
+{
+    "name": "UnityModule.Common.GameCenter",
+    "references": [
+        "UnityModule.Common.Define",
+        "UnityModule.Common.Access",
+        "UnityModule.Common.Func",
+        "UnityModule.Common.Utility",
+        "UnityModule.GooglePlayGames"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

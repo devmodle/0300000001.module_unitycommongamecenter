@@ -1,0 +1,12 @@
+{
+  "name": "unitymodule.common.gamecenter",
+  "version": "1.0.0",
+  "displayName": "UnityModule.Common.GameCenter",
+  "author": {
+    "name": "dante",
+    "email": "are2341@nate.com"
+  },
+  "dependencies": {
+    "unitymodule.common": "https://gitlab.com/9tapmodule.repository/unitymodule_common_gamecenter_client.git#v1.0.0"
+  }
+}
