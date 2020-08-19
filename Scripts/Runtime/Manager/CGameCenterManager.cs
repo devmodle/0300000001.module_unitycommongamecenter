@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if GAME_CENTER_ENABLE
+#if GAME_CENTER_MODULE_ENABLE
 using UnityEngine.SocialPlatforms;
 
 #if UNITY_IOS
@@ -208,4 +208,4 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	}
 	#endregion			// 함수
 }
-#endif			// #if GAME_CENTER_ENABLE
+#endif			// #if GAME_CENTER_MODULE_ENABLE
