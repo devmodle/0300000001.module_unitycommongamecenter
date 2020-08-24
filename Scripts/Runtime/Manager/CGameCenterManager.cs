@@ -26,6 +26,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	public bool IsLogin {
 		get {
+			// 초기화 되었을 경우
 			if(this.IsInit) {
 #if UNITY_IOS
 				return Social.localUser.authenticated;
@@ -56,6 +57,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	public virtual void Init(System.Action<CGameCenterManager, bool> a_oCallback) {
 		CFunc.ShowLog("CGameCenterManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
+		// 초기화 가능 할 경우
 		if(!this.IsInit && CAccess.IsMobilePlatform()) {
 			this.IsInit = true;
 
@@ -119,6 +121,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	public void Login(System.Action<CGameCenterManager, bool> a_oCallback) {
 		CFunc.ShowLog("CGameCenterManager.Login", KCDefine.B_LOG_COLOR_PLUGIN);
 
+		// 로그인이 필요 없을 경우
 		if(!this.IsInit || this.IsLogin) {
 			a_oCallback?.Invoke(this, this.IsLogin);
 		} else {
@@ -136,6 +139,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	public void Logout(System.Action<CGameCenterManager> a_oCallback) {
 		CFunc.ShowLog("CGameCenterManager.Logout", KCDefine.B_LOG_COLOR_PLUGIN);
 
+		// 초기화 되었을 경우
 		if(this.IsInit) {
 #if UNITY_ANDROID
 			PlayGamesPlatform.Instance.SignOut();
@@ -149,6 +153,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	public void ShowLeaderboardUI() {
 		CFunc.ShowLog("CGameCenterManager.ShowLeaderboardUI", KCDefine.B_LOG_COLOR_PLUGIN);
 
+		// 초기화 되었을 경우
 		if(this.IsInit) {
 #if UNITY_IOS
 			Social.ShowLeaderboardUI();
@@ -162,6 +167,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	public void ShowAchievementUI() {
 		CFunc.ShowLog("CGameCenterManager.ShowAchievementUI", KCDefine.B_LOG_COLOR_PLUGIN);
 
+		// 초기화 되었을 경우
 		if(this.IsInit) {
 #if UNITY_IOS
 			Social.ShowAchievementsUI();
@@ -176,6 +182,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 		CAccess.Assert(a_oLeaderboardID.ExIsValid());
 		CFunc.ShowLog("CGameCenterManager.UpdateScore: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oLeaderboardID, a_nScore);
 
+		// 초기화가 필요 할 경우
 		if(!this.IsInit) {
 			a_oCallback?.Invoke(this, false);
 		} else {
@@ -194,6 +201,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 		CAccess.Assert(a_oAchievementID.ExIsValid());
 		CFunc.ShowLog("CGameCenterManager.UpdateAchievement: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oAchievementID, a_dblPercent);
 
+		// 초기화가 필요 할 경우
 		if(!this.IsInit) {
 			a_oCallback?.Invoke(this, false);
 		} else {
