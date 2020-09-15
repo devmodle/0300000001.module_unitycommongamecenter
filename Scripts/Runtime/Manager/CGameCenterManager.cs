@@ -179,7 +179,6 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	//! 점수를 갱신한다
 	public void UpdateScore(string a_oLeaderboardID, long a_nScore, System.Action<CGameCenterManager, bool> a_oCallback) {
-		CAccess.Assert(a_oLeaderboardID.ExIsValid());
 		CFunc.ShowLog("CGameCenterManager.UpdateScore: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oLeaderboardID, a_nScore);
 
 		// 초기화가 필요 할 경우
@@ -198,7 +197,6 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	//! 업적을 갱신한다
 	public void UpdateAchievement(string a_oAchievementID, double a_dblPercent, System.Action<CGameCenterManager, bool> a_oCallback) {
-		CAccess.Assert(a_oAchievementID.ExIsValid());
 		CFunc.ShowLog("CGameCenterManager.UpdateAchievement: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oAchievementID, a_dblPercent);
 
 		// 초기화가 필요 할 경우
