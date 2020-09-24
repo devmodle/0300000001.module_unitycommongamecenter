@@ -18,7 +18,6 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	private System.Action<CGameCenterManager, bool> m_oLoginCallback = null;
 	private System.Action<CGameCenterManager, bool> m_oUpdateScoreCallback = null;
 	private System.Action<CGameCenterManager, bool> m_oUpdateAchievementCallback = null;
-	private System.Action<CGameCenterManager, IScore[], bool> m_oLoadScoresCallback = null;
 	#endregion			// 변수
 
 	#region 프로퍼티
@@ -190,14 +189,6 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 			CFunc.ShowLog("CGameCenterManager.OnLogin: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_bIsSuccess);
 			m_oLoginCallback?.Invoke(this, a_bIsSuccess);
 		});
-	}
-
-	//! 점수를 로드했을 경우
-	public void OnLoadScores(IScore[] a_oScores) {
-		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_GAME_CM_LOAD_SCORES_CALLBACK, () => {
-			CFunc.ShowLog("CGameCenterManager.OnLoadScores: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oScores);
-			m_oLoadScoresCallback?.Invoke(this, a_oScores, a_oScores != null);
-		});	
 	}
 
 	//! 점수를 갱신했을 경우
