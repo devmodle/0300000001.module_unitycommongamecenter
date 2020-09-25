@@ -57,7 +57,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 		CFunc.ShowLog("CGameCenterManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
 		// 초기화 가능 할 경우
-		if(!this.IsInit && CAccess.IsMobilePlatform()) {
+		if(!this.IsInit && CAccess.IsMobile()) {
 			this.IsInit = true;
 
 #if UNITY_IOS
