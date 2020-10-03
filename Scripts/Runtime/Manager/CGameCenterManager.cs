@@ -56,6 +56,39 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	public virtual void Init(System.Action<CGameCenterManager, bool> a_oCallback) {
 		CFunc.ShowLog("CGameCenterManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
+		// 초기화 되었을 경우
+		if(this.IsInit) {
+			a_oCallback?.Invoke(this, true);
+		} else {
+#if UNITY_IOS
+			GameCenterPlatform.ShowDefaultAchievementCompletionBanner(true);
+#elif UNITY_ANDROID
+			var oBuilder = new PlayGamesClientConfiguration.Builder();
+			
+#if SAVED_GAME_ENABLE && STORE_BUILD
+			oBuilder.EnableSavedGames();
+#endif			// #if SAVED_GAME_ENABLE && STORE_BUILD
+
+			PlayGamesPlatform.InitializeInstance(oBuilder.Build());
+
+#if ADHOC_BUILD || STORE_BUILD
+			PlayGamesPlatform.DebugLogEnabled = false;
+#else
+			PlayGamesPlatform.DebugLogEnabled = true;
+#endif			// #if ADHOC_BUILD || STORE_BUILD
+
+			PlayGamesPlatform.Activate();
+#endif			// #if UNITY_IOS
+
+			this.IsInit = true;
+			a_oCallback?.Invoke(this, this.IsInit);
+		}
+#else
+		a_oCallback?.Invoke(this, false);
+#endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
+
+
 		// 초기화 가능 할 경우
 		if(!this.IsInit && CAccess.IsMobile()) {
 			this.IsInit = true;
