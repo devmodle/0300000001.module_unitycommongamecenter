@@ -56,7 +56,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	public virtual void Init(System.Action<CGameCenterManager, bool> a_oCallback) {
 		CFunc.ShowLog("CGameCenterManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
-#if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
+#if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
 			a_oCallback?.Invoke(this, true);
@@ -66,9 +66,9 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 #elif UNITY_ANDROID
 			var oBuilder = new PlayGamesClientConfiguration.Builder();
 			
-#if SAVED_GAME_ENABLE && STORE_BUILD
+#if STORE_BUILD && GAME_CENTER_SAVE_ENABLE
 			oBuilder.EnableSavedGames();
-#endif			// #if SAVED_GAME_ENABLE && STORE_BUILD
+#endif			// #if STORE_BUILD && GAME_CENTER_SAVE_ENABLE
 
 			PlayGamesPlatform.InitializeInstance(oBuilder.Build());
 
@@ -86,7 +86,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 		}
 #else
 		a_oCallback?.Invoke(this, false);
-#endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
+#endif			// #if UNITY_IOS || UNITY_ANDROID
 
 
 		// 초기화 가능 할 경우
@@ -98,9 +98,9 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 #elif UNITY_ANDROID
 			var oBuilder = new PlayGamesClientConfiguration.Builder();
 			
-#if SAVED_GAME_ENABLE && STORE_BUILD
+#if GAME_CENTER_SAVE_ENABLE && STORE_BUILD
 			oBuilder.EnableSavedGames();
-#endif			// #if SAVED_GAME_ENABLE && STORE_BUILD
+#endif			// #if GAME_CENTER_SAVE_ENABLE && STORE_BUILD
 
 			PlayGamesPlatform.InitializeInstance(oBuilder.Build());
 
