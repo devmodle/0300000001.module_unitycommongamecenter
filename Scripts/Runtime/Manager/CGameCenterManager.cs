@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 #if GAME_CENTER_MODULE_ENABLE
+#if UNITY_IOS || UNITY_ANDROID
 using UnityEngine.SocialPlatforms;
 
 #if UNITY_IOS
@@ -11,6 +12,7 @@ using UnityEngine.SocialPlatforms.GameCenter;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 #endif			// #if UNITY_IOS
+#endif			// #if UNITY_IOS || UNITY_ANDROID
 
 //! 게임 센터 관리자
 public class CGameCenterManager : CSingleton<CGameCenterManager> {
@@ -25,18 +27,20 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	public bool IsLogin {
 		get {
+#if UNITY_IOS || UNITY_ANDROID
 			// 초기화 되었을 경우
 			if(this.IsInit) {
 #if UNITY_IOS
 				return Social.localUser.authenticated;
-#elif UNITY_ANDROID
-				return PlayGamesPlatform.Instance.IsAuthenticated();
 #else
-				return false;
+				return PlayGamesPlatform.Instance.IsAuthenticated();
 #endif			// #if UNITY_IOS
+			} else {
+				return false;
 			}
-
+#else
 			return false;
+#endif			// #if UNITY_IOS || UNITY_ANDROID
 		}
 	}
 
@@ -63,7 +67,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 		} else {
 #if UNITY_IOS
 			GameCenterPlatform.ShowDefaultAchievementCompletionBanner(true);
-#elif UNITY_ANDROID
+#else
 			var oBuilder = new PlayGamesClientConfiguration.Builder();
 			
 #if STORE_BUILD && GAME_CENTER_SAVE_ENABLE
@@ -87,41 +91,14 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 #else
 		a_oCallback?.Invoke(this, false);
 #endif			// #if UNITY_IOS || UNITY_ANDROID
-
-
-		// 초기화 가능 할 경우
-		if(!this.IsInit && CAccess.IsMobile()) {
-			this.IsInit = true;
-
-#if UNITY_IOS
-			GameCenterPlatform.ShowDefaultAchievementCompletionBanner(true);
-#elif UNITY_ANDROID
-			var oBuilder = new PlayGamesClientConfiguration.Builder();
-			
-#if GAME_CENTER_SAVE_ENABLE && STORE_BUILD
-			oBuilder.EnableSavedGames();
-#endif			// #if GAME_CENTER_SAVE_ENABLE && STORE_BUILD
-
-			PlayGamesPlatform.InitializeInstance(oBuilder.Build());
-
-#if ADHOC_BUILD || STORE_BUILD
-			PlayGamesPlatform.DebugLogEnabled = false;
-#else
-			PlayGamesPlatform.DebugLogEnabled = false;
-#endif			// #if ADHOC_BUILD || STORE_BUILD
-
-			PlayGamesPlatform.Activate();
-#endif			// #if UNITY_IOS
-		}
-
-		a_oCallback?.Invoke(this, this.IsInit);
 	}
 
 	//! 로그인을 처리한다
 	public void Login(System.Action<CGameCenterManager, bool> a_oCallback) {
 		CFunc.ShowLog("CGameCenterManager.Login", KCDefine.B_LOG_COLOR_PLUGIN);
 
-		// 로그인이 필요 없을 경우
+#if UNITY_IOS || UNITY_ANDROID
+		// 로그인 되었을 경우
 		if(!this.IsInit || this.IsLogin) {
 			a_oCallback?.Invoke(this, this.IsLogin);
 		} else {
@@ -129,22 +106,25 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 #if UNITY_IOS
 			Social.localUser.Authenticate(this.OnLogin);
-#elif UNITY_ANDROID
+#else
 			PlayGamesPlatform.Instance.Authenticate(this.OnLogin);
 #endif			// #if UNITY_IOS
 		}
+#else
+		a_oCallback?.Invoke(this, false);
+#endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 
 	//! 로그아웃을 처리한다
 	public void Logout(System.Action<CGameCenterManager> a_oCallback) {
 		CFunc.ShowLog("CGameCenterManager.Logout", KCDefine.B_LOG_COLOR_PLUGIN);
 
+#if UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
-#if UNITY_ANDROID
 			PlayGamesPlatform.Instance.SignOut();
-#endif			// #if UNITY_ANDROID
 		}
+#endif			// #if UNITY_ANDROID
 
 		a_oCallback?.Invoke(this);
 	}
@@ -153,64 +133,83 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	public void ShowLeaderboardUI() {
 		CFunc.ShowLog("CGameCenterManager.ShowLeaderboardUI", KCDefine.B_LOG_COLOR_PLUGIN);
 
+#if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
 #if UNITY_IOS
 			Social.ShowLeaderboardUI();
-#elif UNITY_ANDROID
+#else
 			PlayGamesPlatform.Instance.ShowLeaderboardUI();
 #endif			// #if UNITY_IOS
 		}
+#endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 
 	//! 업적 UI 를 출력한다
 	public void ShowAchievementUI() {
 		CFunc.ShowLog("CGameCenterManager.ShowAchievementUI", KCDefine.B_LOG_COLOR_PLUGIN);
 
+#if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
 #if UNITY_IOS
 			Social.ShowAchievementsUI();
-#elif UNITY_ANDROID
+#else
 			PlayGamesPlatform.Instance.ShowAchievementsUI();
 #endif			// #if UNITY_IOS
 		}
+#endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 
 	//! 점수를 갱신한다
-	public void UpdateScore(string a_oLeaderboardID, long a_nScore, System.Action<CGameCenterManager, bool> a_oCallback) {
-		CFunc.ShowLog("CGameCenterManager.UpdateScore: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oLeaderboardID, a_nScore);
+	public void UpdateScore(string a_oLeaderboardID, 
+		long a_nScore, System.Action<CGameCenterManager, bool> a_oCallback) 
+	{
+		CFunc.ShowLog("CGameCenterManager.UpdateScore: {0}, {1}", 
+			KCDefine.B_LOG_COLOR_PLUGIN, a_oLeaderboardID, a_nScore);
 
-		// 초기화가 필요 할 경우
-		if(!this.IsInit) {
-			a_oCallback?.Invoke(this, false);
-		} else {
+#if UNITY_IOS || UNITY_ANDROID
+		// 초기화 되었을 경우
+		if(this.IsInit) {
 			m_oUpdateScoreCallback = a_oCallback;
 
 #if UNITY_IOS
 			Social.ReportScore(a_nScore, a_oLeaderboardID, this.OnUpdateScore);
-#elif UNITY_ANDROID
+#else
 			PlayGamesPlatform.Instance.ReportScore(a_nScore, a_oLeaderboardID, this.OnUpdateScore);
 #endif			// #if UNITY_IOS
+		} else {
+			a_oCallback?.Invoke(this, false);
 		}
+#else
+		a_oCallback?.Invoke(this, false);
+#endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 
 	//! 업적을 갱신한다
-	public void UpdateAchievement(string a_oAchievementID, double a_dblPercent, System.Action<CGameCenterManager, bool> a_oCallback) {
-		CFunc.ShowLog("CGameCenterManager.UpdateAchievement: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oAchievementID, a_dblPercent);
+	public void UpdateAchievement(string a_oAchievementID, 
+		double a_dblPercent, System.Action<CGameCenterManager, bool> a_oCallback) 
+	{
+		CFunc.ShowLog("CGameCenterManager.UpdateAchievement: {0}, {1}", 
+			KCDefine.B_LOG_COLOR_PLUGIN, a_oAchievementID, a_dblPercent);
 
-		// 초기화가 필요 할 경우
-		if(!this.IsInit) {
-			a_oCallback?.Invoke(this, false);
-		} else {
+#if UNITY_IOS || UNITY_ANDROID
+		// 초기화 되었을 경우
+		if(this.IsInit) {
 			m_oUpdateAchievementCallback = a_oCallback;
 
 #if UNITY_IOS
 			Social.ReportProgress(a_oAchievementID, a_dblPercent, this.OnUpdateAchievement);
-#elif UNITY_ANDROID
-			PlayGamesPlatform.Instance.ReportProgress(a_oAchievementID, a_dblPercent, this.OnUpdateAchievement);
+#else
+			PlayGamesPlatform.Instance.ReportProgress(a_oAchievementID, 
+				a_dblPercent, this.OnUpdateAchievement);
 #endif			// #if UNITY_IOS
+		} else {
+			a_oCallback?.Invoke(this, false);
 		}
+#else
+		a_oCallback?.Invoke(this, false);
+#endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 	#endregion			// 함수
 
