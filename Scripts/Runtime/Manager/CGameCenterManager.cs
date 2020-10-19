@@ -169,6 +169,8 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 			KCDefine.B_LOG_COLOR_PLUGIN, a_oLeaderboardID, a_nScore);
 
 #if UNITY_IOS || UNITY_ANDROID
+		CAccess.Assert(a_oLeaderboardID.ExIsValid());
+
 		// 초기화 되었을 경우
 		if(this.IsInit) {
 			m_oUpdateScoreCallback = a_oCallback;
@@ -194,6 +196,8 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 			KCDefine.B_LOG_COLOR_PLUGIN, a_oAchievementID, a_dblPercent);
 
 #if UNITY_IOS || UNITY_ANDROID
+		CAccess.Assert(a_oAchievementID.ExIsValid());
+
 		// 초기화 되었을 경우
 		if(this.IsInit) {
 			m_oUpdateAchievementCallback = a_oCallback;
