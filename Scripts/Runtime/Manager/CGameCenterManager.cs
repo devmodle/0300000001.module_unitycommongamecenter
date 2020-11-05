@@ -17,6 +17,7 @@ using GooglePlayGames.BasicApi;
 //! 게임 센터 관리자
 public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	#region 변수
+	private System.Action<CGameCenterManager, bool> m_oInitCallback = null;
 	private System.Action<CGameCenterManager, bool> m_oLoginCallback = null;
 	private System.Action<CGameCenterManager, bool> m_oUpdateScoreCallback = null;
 	private System.Action<CGameCenterManager, bool> m_oUpdateAchievementCallback = null;
@@ -85,8 +86,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 			PlayGamesPlatform.Activate();
 #endif			// #if UNITY_IOS
 
-			this.IsInit = true;
-			a_oCallback?.Invoke(this, this.IsInit);
+			this.ExLateCallFunc((a_oSender, a_oParams) => this.OnInit());
 		}
 #else
 		a_oCallback?.Invoke(this, false);
@@ -219,6 +219,16 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	#region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
+	//! 초기화 되었을 경우
+	private void OnInit() {
+		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_GAME_CM_INIT_CALLBACK, () => {
+			CFunc.ShowLog("CGameCenterManager.OnInit");
+
+			this.IsInit = true;
+			m_oInitCallback?.Invoke(this, this.IsInit);
+		});
+	}
+
 	//! 로그인 되었을 경우
 	private void OnLogin(bool a_bIsSuccess) {
 		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_GAME_CM_LOGIN_CALLBACK, () => {
@@ -243,7 +253,6 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 		});
 	}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
-
 	#endregion			// 조건부 함수
 }
 #endif			// #if GAME_CENTER_MODULE_ENABLE
