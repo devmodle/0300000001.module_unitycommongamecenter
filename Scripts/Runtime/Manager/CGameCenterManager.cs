@@ -233,7 +233,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	private void OnLogin(bool a_bIsSuccess) {
 		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_GAME_CM_LOGIN_CALLBACK, () => {
 			CFunc.ShowLog("CGameCenterManager.OnLogin: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_bIsSuccess);
-			m_oLoginCallback?.Invoke(this, a_bIsSuccess);
+			CFunc.Invoke(ref m_oLoginCallback, this, a_bIsSuccess);
 		});
 	}
 
