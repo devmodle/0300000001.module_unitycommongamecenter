@@ -225,7 +225,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 			CFunc.ShowLog("CGameCenterManager.OnInit");
 
 			this.IsInit = true;
-			m_oInitCallback?.Invoke(this, this.IsInit);
+			CFunc.Invoke(ref m_oInitCallback, this, this.IsInit);
 		});
 	}
 
@@ -241,7 +241,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	private void OnUpdateScore(bool a_bIsSuccess) {
 		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_SCORE_CALLBACK, () => {
 			CFunc.ShowLog("CGameCenterManager.OnUpdateScore: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_bIsSuccess);
-			m_oUpdateScoreCallback?.Invoke(this, a_bIsSuccess);
+			CFunc.Invoke(ref m_oUpdateScoreCallback, this, a_bIsSuccess);
 		});
 	}
 
@@ -249,7 +249,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	private void OnUpdateAchievement(bool a_bIsSuccess) {
 		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_ACHIEVEMENT_CALLBACK, () => {
 			CFunc.ShowLog("CGameCenterManager.OnUpdateAchievement: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_bIsSuccess);
-			m_oUpdateAchievementCallback?.Invoke(this, a_bIsSuccess);
+			CFunc.Invoke(ref m_oUpdateAchievementCallback, this, a_bIsSuccess);
 		});
 	}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
