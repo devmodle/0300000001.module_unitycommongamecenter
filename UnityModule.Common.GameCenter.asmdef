@@ -2,10 +2,12 @@
     "name": "UnityModule.Common.GameCenter",
     "references": [
         "UnityModule.Common.Define",
-        "UnityModule.Common.Access",
-        "UnityModule.Common.Extension",
-        "UnityModule.Common.Func",
-        "UnityModule.Common.Utility",
+		"UnityModule.Common.Access",
+		"UnityModule.Common.Factory",
+		"UnityModule.Common.Extension",
+		"UnityModule.Common.Func",
+		"UnityModule.Common.Utility",
+		"UnityModule.Common.Externals",
         "UnityModule.GooglePlayGames"
     ],
     "includePlatforms": [],

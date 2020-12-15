@@ -48,7 +48,8 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	public string AuthCode {
 		get {
 #if UNITY_ANDROID
-			return this.IsLogin ? PlayGamesPlatform.Instance.GetServerAuthCode() : string.Empty;
+			return this.IsLogin ? PlayGamesPlatform.Instance.GetServerAuthCode() 
+				: string.Empty;
 #else
 			return KCDefine.U_AUTH_CODE_GAME_CM_UNKNOWN;
 #endif			// #if UNITY_ANDROID
@@ -165,12 +166,12 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	public void UpdateScore(string a_oLeaderboardID, 
 		long a_nScore, System.Action<CGameCenterManager, bool> a_oCallback) 
 	{
+		CAccess.Assert(a_nScore >= KCDefine.B_VALUE_LONG_0 && a_oLeaderboardID.ExIsValid());
+
 		CFunc.ShowLog("CGameCenterManager.UpdateScore: {0}, {1}", 
 			KCDefine.B_LOG_COLOR_PLUGIN, a_oLeaderboardID, a_nScore);
 
 #if UNITY_IOS || UNITY_ANDROID
-		CAccess.Assert(a_oLeaderboardID.ExIsValid());
-
 		// 초기화 되었을 경우
 		if(this.IsInit) {
 			m_oUpdateScoreCallback = a_oCallback;
@@ -192,12 +193,13 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	public void UpdateAchievement(string a_oAchievementID, 
 		double a_dblPercent, System.Action<CGameCenterManager, bool> a_oCallback) 
 	{
+		CAccess.Assert(a_oAchievementID.ExIsValid());
+		CAccess.Assert(a_dblPercent.ExIsGreateEquals(KCDefine.B_VALUE_DOUBLE_0));
+
 		CFunc.ShowLog("CGameCenterManager.UpdateAchievement: {0}, {1}", 
 			KCDefine.B_LOG_COLOR_PLUGIN, a_oAchievementID, a_dblPercent);
 
 #if UNITY_IOS || UNITY_ANDROID
-		CAccess.Assert(a_oAchievementID.ExIsValid());
-
 		// 초기화 되었을 경우
 		if(this.IsInit) {
 			m_oUpdateAchievementCallback = a_oCallback;
