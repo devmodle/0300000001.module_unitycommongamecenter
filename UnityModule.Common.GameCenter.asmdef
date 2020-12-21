@@ -1,14 +1,15 @@
 {
     "name": "UnityModule.Common.GameCenter",
+    "rootNamespace": "",
     "references": [
+        "UnityModule.GooglePlayGames",
         "UnityModule.Common.Define",
-		"UnityModule.Common.Access",
-		"UnityModule.Common.Factory",
-		"UnityModule.Common.Extension",
-		"UnityModule.Common.Func",
-		"UnityModule.Common.Utility",
-		"UnityModule.Common.Externals",
-        "UnityModule.GooglePlayGames"
+        "UnityModule.Common.Access",
+        "UnityModule.Common.Factory",
+        "UnityModule.Common.Extension",
+        "UnityModule.Common.Func",
+        "UnityModule.Common.Utility",
+        "UnityModule.Common.Externals"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
