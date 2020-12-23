@@ -194,7 +194,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 		double a_dblPercent, System.Action<CGameCenterManager, bool> a_oCallback) 
 	{
 		CAccess.Assert(a_oAchievementID.ExIsValid());
-		CAccess.Assert(a_dblPercent.ExIsGreateEquals(KCDefine.B_VALUE_DOUBLE_0));
+		CAccess.Assert(a_dblPercent.ExIsGreateEquals(KCDefine.B_VALUE_DBL_0));
 
 		CFunc.ShowLog("CGameCenterManager.UpdateAchievement: {0}, {1}", 
 			KCDefine.B_LOG_COLOR_PLUGIN, a_oAchievementID, a_dblPercent);
