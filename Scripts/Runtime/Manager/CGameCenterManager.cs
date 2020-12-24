@@ -87,7 +87,9 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 			PlayGamesPlatform.Activate();
 #endif			// #if UNITY_IOS
 
-			this.ExLateCallFunc((a_oSender, a_oParams) => this.OnInit());
+			this.ExLateCallFunc((a_oSender, a_oParams) => {
+				this.OnInit();
+			});
 		}
 #else
 		a_oCallback?.Invoke(this, false);
