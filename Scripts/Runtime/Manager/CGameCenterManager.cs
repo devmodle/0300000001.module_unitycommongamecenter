@@ -50,7 +50,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 #if UNITY_ANDROID
 			return this.IsLogin ? PlayGamesPlatform.Instance.GetServerAuthCode() : string.Empty;
 #else
-			return KCDefine.U_AUTH_CODE_GAME_CM_UNKNOWN;
+			return string.Empty;
 #endif			// #if UNITY_ANDROID
 		}
 	}
