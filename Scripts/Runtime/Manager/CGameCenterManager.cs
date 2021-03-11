@@ -130,32 +130,32 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	}
 	
 	//! 리더보드 UI 를 출력한다
-	public void ShowLeaderboardUI() {
-		CFunc.ShowLog("CGameCenterManager.ShowLeaderboardUI", KCDefine.B_LOG_COLOR_PLUGIN);
+	public void ShowLeaderboardUIs() {
+		CFunc.ShowLog("CGameCenterManager.ShowLeaderboardUIs", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
 #if UNITY_IOS
-			Social.ShowLeaderboardUI();
+			Social.ShowLeaderboardUIs();
 #else
-			PlayGamesPlatform.Instance.ShowLeaderboardUI();
+			PlayGamesPlatform.Instance.ShowLeaderboardUIs();
 #endif			// #if UNITY_IOS
 		}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 
 	//! 업적 UI 를 출력한다
-	public void ShowAchievementUI() {
-		CFunc.ShowLog("CGameCenterManager.ShowAchievementUI", KCDefine.B_LOG_COLOR_PLUGIN);
+	public void ShowAchievementUIs() {
+		CFunc.ShowLog("CGameCenterManager.ShowAchievementUIs", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
 #if UNITY_IOS
-			Social.ShowAchievementsUI();
+			Social.ShowAchievementsUIs();
 #else
-			PlayGamesPlatform.Instance.ShowAchievementsUI();
+			PlayGamesPlatform.Instance.ShowAchievementsUIs();
 #endif			// #if UNITY_IOS
 		}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
