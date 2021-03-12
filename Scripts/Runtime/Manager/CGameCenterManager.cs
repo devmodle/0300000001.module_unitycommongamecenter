@@ -163,7 +163,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	//! 점수를 갱신한다
 	public void UpdateScore(string a_oLeaderboardID, long a_nScore, System.Action<CGameCenterManager, bool> a_oCallback) {
-		CAccess.Assert(a_nScore >= KCDefine.B_VALUE_LONG_0 && a_oLeaderboardID.ExIsValid());
+		CAccess.Assert(a_nScore >= KCDefine.B_VALUE_0_LONG && a_oLeaderboardID.ExIsValid());
 		CFunc.ShowLog("CGameCenterManager.UpdateScore: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oLeaderboardID, a_nScore);
 
 #if UNITY_IOS || UNITY_ANDROID
@@ -187,7 +187,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	//! 업적을 갱신한다
 	public void UpdateAchievement(string a_oAchievementID, double a_dblPercent, System.Action<CGameCenterManager, bool> a_oCallback) {
 		CAccess.Assert(a_oAchievementID.ExIsValid());
-		CAccess.Assert(a_dblPercent.ExIsGreateEquals(KCDefine.B_VALUE_DBL_0));
+		CAccess.Assert(a_dblPercent.ExIsGreateEquals(KCDefine.B_VALUE_0_DBL));
 
 		CFunc.ShowLog("CGameCenterManager.UpdateAchievement: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oAchievementID, a_dblPercent);
 
