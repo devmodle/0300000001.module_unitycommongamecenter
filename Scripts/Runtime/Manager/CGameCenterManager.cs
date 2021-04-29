@@ -137,9 +137,9 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 		// 초기화 되었을 경우
 		if(this.IsInit) {
 #if UNITY_IOS
-			Social.ShowLeaderboardUIs();
+			Social.ShowLeaderboardUI();
 #else
-			PlayGamesPlatform.Instance.ShowLeaderboardUIs();
+			PlayGamesPlatform.Instance.ShowLeaderboardUI();
 #endif			// #if UNITY_IOS
 		}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
@@ -153,9 +153,9 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 		// 초기화 되었을 경우
 		if(this.IsInit) {
 #if UNITY_IOS
-			Social.ShowAchievementsUIs();
+			Social.ShowAchievementsUI();
 #else
-			PlayGamesPlatform.Instance.ShowAchievementsUIs();
+			PlayGamesPlatform.Instance.ShowAchievementsUI();
 #endif			// #if UNITY_IOS
 		}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
