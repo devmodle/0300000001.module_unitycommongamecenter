@@ -230,7 +230,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 		});
 	}
 
-	//! 점수를 갱신했을 경우
+	//! 점수가 갱신 되었을 경우
 	private void OnUpdateScore(bool a_bIsSuccess) {
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_SCORE_CALLBACK, () => {
 			CFunc.ShowLog($"CGameCenterManager.OnUpdateScore: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
@@ -238,7 +238,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 		});
 	}
 
-	//! 업적을 갱신했을 경우
+	//! 업적이 갱신 되었을 경우
 	private void OnUpdateAchievement(bool a_bIsSuccess) {
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_ACHIEVEMENT_CALLBACK, () => {
 			CFunc.ShowLog($"CGameCenterManager.OnUpdateAchievement: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
