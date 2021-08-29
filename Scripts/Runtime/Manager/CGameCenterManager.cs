@@ -17,8 +17,14 @@ using GooglePlayGames.BasicApi;
 
 //! 게임 센터 관리자
 public class CGameCenterManager : CSingleton<CGameCenterManager> {
+	//! 콜백 매개 변수
+	public struct STCallbackParams {
+		public System.Action<CGameCenterManager, bool> m_oInitCallback;
+	}
+
 	#region 변수
-	private System.Action<CGameCenterManager, bool> m_oInitCallback = null;
+	private STCallbackParams m_stCallbackParams;
+
 	private System.Action<CGameCenterManager, bool> m_oLoginCallback = null;
 	private System.Action<CGameCenterManager, bool> m_oUpdateScoreCallback = null;
 	private System.Action<CGameCenterManager, bool> m_oUpdateAchievementCallback = null;
@@ -59,14 +65,16 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	#region 함수
 	//! 초기화
-	public virtual void Init(System.Action<CGameCenterManager, bool> a_oCallback) {
+	public virtual void Init(STCallbackParams a_stCallbackParams) {
 		CFunc.ShowLog("CGameCenterManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
-			a_oCallback?.Invoke(this, true);
+			a_stCallbackParams.m_oInitCallback?.Invoke(this, true);
 		} else {
+			m_stCallbackParams = a_stCallbackParams;
+
 #if UNITY_IOS
 			GameCenterPlatform.ShowDefaultAchievementCompletionBanner(true);
 #else
@@ -78,11 +86,11 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 			PlayGamesPlatform.InitializeInstance(oBuilder.Build());
 
-#if ADHOC_BUILD || STORE_BUILD
-			PlayGamesPlatform.DebugLogEnabled = false;
-#else
+#if DEBUG || DEVELOPMENT_BUILD
 			PlayGamesPlatform.DebugLogEnabled = true;
-#endif			// #if ADHOC_BUILD || STORE_BUILD
+#else
+			PlayGamesPlatform.DebugLogEnabled = false;
+#endif			// #if DEBUG || DEVELOPMENT_BUILD
 
 			PlayGamesPlatform.Activate();
 #endif			// #if UNITY_IOS
@@ -90,7 +98,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 			this.ExLateCallFunc((a_oSender, a_oParams) => this.OnInit());
 		}
 #else
-		a_oCallback?.Invoke(this, false);
+		a_stCallbackParams.m_oInitCallback?.Invoke(this, false);
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 
@@ -219,7 +227,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 			CFunc.ShowLog("CGameCenterManager.OnInit");
 			this.IsInit = true;
 			
-			CFunc.Invoke(ref m_oInitCallback, this, this.IsInit);
+			CFunc.Invoke(ref m_stCallbackParams.m_oInitCallback, this, this.IsInit);
 		});
 	}
 
