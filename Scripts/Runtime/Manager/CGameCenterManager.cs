@@ -232,28 +232,19 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	/** 로그인 되었을 경우 */
 	private void OnLogin(bool a_bIsSuccess) {
 		CFunc.ShowLog($"CGameCenterManager.OnLogin: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
-
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGIN_CALLBACK, () => {
-			CFunc.Invoke(ref m_oLoginCallback, this, a_bIsSuccess);
-		});
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGIN_CALLBACK, () => CFunc.Invoke(ref m_oLoginCallback, this, a_bIsSuccess));
 	}
 
 	/** 점수가 갱신 되었을 경우 */
 	private void OnUpdateScore(bool a_bIsSuccess) {
 		CFunc.ShowLog($"CGameCenterManager.OnUpdateScore: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
-
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_SCORE_CALLBACK, () => {	
-			CFunc.Invoke(ref m_oUpdateScoreCallback, this, a_bIsSuccess);
-		});
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_SCORE_CALLBACK, () => CFunc.Invoke(ref m_oUpdateScoreCallback, this, a_bIsSuccess));
 	}
 
 	/** 업적이 갱신 되었을 경우 */
 	private void OnUpdateAchievement(bool a_bIsSuccess) {
-		CFunc.ShowLog($"CGameCenterManager.OnUpdateAchievement: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
-		
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_ACHIEVEMENT_CALLBACK, () => {
-			CFunc.Invoke(ref m_oUpdateAchievementCallback, this, a_bIsSuccess);
-		});
+		CFunc.ShowLog($"CGameCenterManager.OnUpdateAchievement: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);		
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_ACHIEVEMENT_CALLBACK, () => CFunc.Invoke(ref m_oUpdateAchievementCallback, this, a_bIsSuccess));
 	}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	#endregion			// 조건부 함수
