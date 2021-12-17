@@ -223,7 +223,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	private void OnInit() {
 		CFunc.ShowLog("CGameCenterManager.OnInit");
 
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_INIT_CALLBACK, () => {	
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_INIT_CALLBACK, () => {
 			this.IsInit = true;
 			CFunc.Invoke(ref m_stCallbackParams.m_oCallback, this, this.IsInit);
 		});
