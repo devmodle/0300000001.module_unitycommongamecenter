@@ -222,11 +222,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	/** 초기화 되었을 경우 */
 	private void OnInit() {
 		CFunc.ShowLog("CGameCenterManager.OnInit");
-
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_INIT_CALLBACK, () => {
-			this.IsInit = true;
-			CFunc.Invoke(ref m_stCallbackParams.m_oCallback, this, this.IsInit);
-		});
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_INIT_CALLBACK, () => { this.IsInit = true; CFunc.Invoke(ref m_stCallbackParams.m_oCallback, this, this.IsInit); });
 	}
 
 	/** 로그인 되었을 경우 */
