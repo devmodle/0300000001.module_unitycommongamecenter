@@ -80,9 +80,9 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 #else
 			var oBuilder = new PlayGamesClientConfiguration.Builder();
 			
-#if STORE_BUILD && GAME_CENTER_SAVE_ENABLE
+#if STORE_DIST_BUILD && GAME_CENTER_SAVE_ENABLE
 			oBuilder.EnableSavedGames();
-#endif			// #if STORE_BUILD && GAME_CENTER_SAVE_ENABLE
+#endif			// #if STORE_DIST_BUILD && GAME_CENTER_SAVE_ENABLE
 
 			PlayGamesPlatform.InitializeInstance(oBuilder.Build());
 
