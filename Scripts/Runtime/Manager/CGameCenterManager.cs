@@ -17,17 +17,30 @@ using GooglePlayGames.BasicApi;
 
 /** 게임 센터 관리자 */
 public class CGameCenterManager : CSingleton<CGameCenterManager> {
-	/** 콜백 매개 변수 */
-	public struct STCallbackParams {
-		public System.Action<CGameCenterManager, bool> m_oCallback;
+	/** 콜백 */
+	public enum ECallback {
+		NONE = -1,
+		INIT,
+		[HideInInspector] MAX_VAL
+	}
+
+	/** 게임 센터 콜백 */
+	private enum EGameCenterCallback {
+		NONE = -1,
+		LOGIN,
+		UPDATE_RECORD,
+		UPDATE_ACHIEVEMENT,
+		[HideInInspector] MAX_VAL
+	}
+
+	/** 매개 변수 */
+	public struct STParams {
+		public Dictionary<ECallback, System.Action<CGameCenterManager, bool>> m_oCallbackDict;
 	}
 
 	#region 변수
-	private STCallbackParams m_stCallbackParams;
-
-	private System.Action<CGameCenterManager, bool> m_oLoginCallback = null;
-	private System.Action<CGameCenterManager, bool> m_oUpdateRecordCallback = null;
-	private System.Action<CGameCenterManager, bool> m_oUpdateAchievementCallback = null;
+	private STParams m_stParams;
+	private Dictionary<EGameCenterCallback, System.Action<CGameCenterManager, bool>> m_oCallbackDict = new Dictionary<EGameCenterCallback, System.Action<CGameCenterManager, bool>>();
 	#endregion			// 변수
 
 	#region 프로퍼티
@@ -65,15 +78,15 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	#region 함수
 	/** 초기화 */
-	public virtual void Init(STCallbackParams a_stCallbackParams) {
+	public virtual void Init(STParams a_stParams) {
 		CFunc.ShowLog("CGameCenterManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
-			a_stCallbackParams.m_oCallback?.Invoke(this, true);
+			a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, true);
 		} else {
-			m_stCallbackParams = a_stCallbackParams;
+			m_stParams = a_stParams;
 
 #if UNITY_IOS
 			GameCenterPlatform.ShowDefaultAchievementCompletionBanner(true);
@@ -98,7 +111,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 			this.ExLateCallFunc((a_oSender) => this.OnInit());
 		}
 #else
-		a_stCallbackParams.m_oCallback?.Invoke(this, false);
+		a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, false);
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 
@@ -109,9 +122,9 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 #if UNITY_IOS || UNITY_ANDROID
 		// 로그인 되었을 경우
 		if(!this.IsInit || this.IsLogin) {
-			a_oCallback?.Invoke(this, this.IsLogin);
+			CFunc.Invoke(ref a_oCallback, this, this.IsLogin);
 		} else {
-			m_oLoginCallback = a_oCallback;
+			m_oCallbackDict.ExReplaceVal(EGameCenterCallback.LOGIN, a_oCallback);
 
 #if UNITY_IOS
 			Social.localUser.Authenticate(this.OnLogin);
@@ -120,7 +133,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 #endif			// #if UNITY_IOS
 		}
 #else
-		a_oCallback?.Invoke(this, false);
+		CFunc.Invoke(ref a_oCallback, this, false);
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 
@@ -135,7 +148,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 		}
 #endif			// #if UNITY_ANDROID
 
-		a_oCallback?.Invoke(this);
+		CFunc.Invoke(ref a_oCallback, this);
 	}
 	
 	/** 리더보드 UI 를 출력한다 */
@@ -178,7 +191,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
-			m_oUpdateRecordCallback = a_oCallback;
+			m_oCallbackDict.ExReplaceVal(EGameCenterCallback.UPDATE_RECORD, a_oCallback);
 
 #if UNITY_IOS
 			Social.ReportScore(a_nRecord, a_oLeaderboardID, this.OnUpdateRecord);
@@ -186,10 +199,10 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 			PlayGamesPlatform.Instance.ReportScore(a_nRecord, a_oLeaderboardID, this.OnUpdateRecord);
 #endif			// #if UNITY_IOS
 		} else {
-			a_oCallback?.Invoke(this, false);
+			CFunc.Invoke(ref a_oCallback, this, false);
 		}
 #else
-		a_oCallback?.Invoke(this, false);
+		CFunc.Invoke(ref a_oCallback, this, false);
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 
@@ -201,7 +214,7 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
-			m_oUpdateAchievementCallback = a_oCallback;
+			m_oCallbackDict.ExReplaceVal(EGameCenterCallback.UPDATE_ACHIEVEMENT, a_oCallback);
 
 #if UNITY_IOS
 			Social.ReportProgress(a_oAchievementID, a_dblPercent, this.OnUpdateAchievement);
@@ -209,10 +222,10 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 			PlayGamesPlatform.Instance.ReportProgress(a_oAchievementID, a_dblPercent, this.OnUpdateAchievement);
 #endif			// #if UNITY_IOS
 		} else {
-			a_oCallback?.Invoke(this, false);
+			CFunc.Invoke(ref a_oCallback, this, false);
 		}
 #else
-		a_oCallback?.Invoke(this, false);
+		CFunc.Invoke(ref a_oCallback, this, false);
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 	#endregion			// 함수
@@ -222,25 +235,29 @@ public class CGameCenterManager : CSingleton<CGameCenterManager> {
 	/** 초기화 되었을 경우 */
 	private void OnInit() {
 		CFunc.ShowLog("CGameCenterManager.OnInit");
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_INIT_CALLBACK, () => { this.IsInit = true; CFunc.Invoke(ref m_stCallbackParams.m_oCallback, this, this.IsInit); });
+
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_INIT_CALLBACK, () => {
+			this.IsInit = true;
+			m_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
+		});
 	}
 
 	/** 로그인 되었을 경우 */
 	private void OnLogin(bool a_bIsSuccess) {
 		CFunc.ShowLog($"CGameCenterManager.OnLogin: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGIN_CALLBACK, () => CFunc.Invoke(ref m_oLoginCallback, this, a_bIsSuccess));
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGIN_CALLBACK, () => m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess));
 	}
 
 	/** 기록이 갱신 되었을 경우 */
 	private void OnUpdateRecord(bool a_bIsSuccess) {
 		CFunc.ShowLog($"CGameCenterManager.OnUpdateRecord: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_RECORD_CALLBACK, () => CFunc.Invoke(ref m_oUpdateRecordCallback, this, a_bIsSuccess));
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_RECORD_CALLBACK, () => m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.UPDATE_RECORD)?.Invoke(this, a_bIsSuccess));
 	}
 
 	/** 업적이 갱신 되었을 경우 */
 	private void OnUpdateAchievement(bool a_bIsSuccess) {
 		CFunc.ShowLog($"CGameCenterManager.OnUpdateAchievement: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);		
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_ACHIEVEMENT_CALLBACK, () => CFunc.Invoke(ref m_oUpdateAchievementCallback, this, a_bIsSuccess));
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_ACHIEVEMENT_CALLBACK, () => m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.UPDATE_ACHIEVEMENT)?.Invoke(this, a_bIsSuccess));
 	}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	#endregion			// 조건부 함수
