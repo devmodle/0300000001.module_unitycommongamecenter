@@ -16,7 +16,7 @@ using GooglePlayGames.BasicApi;
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 
 /** 게임 센터 관리자 */
-public class CGameCenterManager : CSingleton<CGameCenterManager> {
+public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 	/** 콜백 */
 	public enum ECallback {
 		NONE = -1,
