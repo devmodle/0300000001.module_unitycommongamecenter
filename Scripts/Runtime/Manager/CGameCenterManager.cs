@@ -86,14 +86,6 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 #if UNITY_IOS
 			GameCenterPlatform.ShowDefaultAchievementCompletionBanner(true);
 #else
-			var oBuilder = new PlayGamesClientConfiguration.Builder();
-			
-#if STORE_DIST_BUILD && GAME_CENTER_SAVE_ENABLE
-			oBuilder.EnableSavedGames();
-#endif			// #if STORE_DIST_BUILD && GAME_CENTER_SAVE_ENABLE
-
-			PlayGamesPlatform.InitializeInstance(oBuilder.Build());
-
 #if DEBUG || DEVELOPMENT_BUILD
 			PlayGamesPlatform.DebugLogEnabled = true;
 #else
