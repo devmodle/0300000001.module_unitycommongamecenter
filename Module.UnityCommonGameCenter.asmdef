@@ -2,7 +2,7 @@
     "name": "Module.UnityCommonGameCenter",
     "rootNamespace": "",
     "references": [
-        "Module.UnityGooglePlayGames",
+        "Google.Play.Games",
         "Module.UnityCommonDefine",
         "Module.UnityCommonAccess",
         "Module.UnityCommonFactory",
