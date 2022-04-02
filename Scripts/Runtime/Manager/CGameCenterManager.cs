@@ -48,30 +48,25 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	public bool IsLogin {
 		get {
-#if UNITY_IOS || UNITY_ANDROID
-			// 초기화 되었을 경우
-			if(this.IsInit) {
 #if UNITY_IOS
-				return Social.localUser.authenticated;
-#else
-				return PlayGamesPlatform.Instance.IsAuthenticated();
-#endif			// #if UNITY_IOS
-			} else {
-				return false;
-			}
+			return this.IsInit ? Social.localUser.authenticated : false;
+#elif UNITY_ANDROID
+			return this.IsInit ? PlayGamesPlatform.Instance.IsAuthenticated() : false;
 #else
 			return false;
-#endif			// #if UNITY_IOS || UNITY_ANDROID
+#endif			// #if UNITY_IOS
 		}
 	}
 
-	public string AuthCode {
+	public string UserID {
 		get {
-#if UNITY_ANDROID
-			return this.IsLogin ? PlayGamesPlatform.Instance.GetServerAuthCode() : string.Empty;
+#if UNITY_IOS
+			return this.IsLogin ? Social.localUser.id : string.Empty;
+#elif UNITY_ANDROID
+			return this.IsLogin ? PlayGamesPlatform.Instance.GetUserId() : string.Empty;
 #else
 			return string.Empty;
-#endif			// #if UNITY_ANDROID
+#endif			// #if UNITY_IOS
 		}
 	}
 	#endregion			// 프로퍼티
@@ -129,26 +124,12 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 #if UNITY_IOS
 			Social.localUser.Authenticate(this.OnLogin);
 #else
-			PlayGamesPlatform.Instance.Authenticate(this.OnLogin);
+			PlayGamesPlatform.Instance.Authenticate((a_eLoginState) => this.OnLogin(a_eLoginState == SignInStatus.Success));
 #endif			// #if UNITY_IOS
 		}
 #else
 		CFunc.Invoke(ref a_oCallback, this, false);
 #endif			// #if UNITY_IOS || UNITY_ANDROID
-	}
-
-	/** 로그아웃을 처리한다 */
-	public void Logout(System.Action<CGameCenterManager> a_oCallback) {
-		CFunc.ShowLog("CGameCenterManager.Logout", KCDefine.B_LOG_COLOR_PLUGIN);
-
-#if UNITY_ANDROID
-		// 초기화 되었을 경우
-		if(this.IsInit) {
-			PlayGamesPlatform.Instance.SignOut();
-		}
-#endif			// #if UNITY_ANDROID
-
-		CFunc.Invoke(ref a_oCallback, this);
 	}
 	
 	/** 리더보드 UI 를 출력한다 */
