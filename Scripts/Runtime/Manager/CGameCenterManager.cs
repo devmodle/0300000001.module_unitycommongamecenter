@@ -123,6 +123,20 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		CFunc.Invoke(ref a_oCallback, this, false);
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
+
+	/** 로그아웃을 처리한다 */
+	public void Logout(System.Action<CGameCenterManager> a_oCallback) {
+		CFunc.ShowLog("CGameCenterManager.Logout", KCDefine.B_LOG_COLOR_PLUGIN);
+
+#if UNITY_IOS || UNITY_ANDROID
+		// 로그인 되었을 경우
+		if(this.IsInit && this.IsLogin) {
+			// Do Something
+		}
+#endif			// #if UNITY_IOS || UNITY_ANDROID
+
+		CFunc.Invoke(ref a_oCallback, this);
+	}
 	
 	/** 리더보드 UI 를 출력한다 */
 	public void ShowLeaderboardUIs() {
