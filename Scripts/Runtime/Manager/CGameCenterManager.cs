@@ -45,6 +45,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	#region 프로퍼티
 	public bool IsInit { get; private set; } = false;
+	public string AccessToken { get; private set; } = string.Empty;
 
 	public bool IsLogin {
 		get {
@@ -232,7 +233,17 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 	/** 로그인 되었을 경우 */
 	private void OnLogin(bool a_bIsSuccess) {
 		CFunc.ShowLog($"CGameCenterManager.OnLogin: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGIN_CALLBACK, () => m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess));
+
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGIN_CALLBACK, () => {
+#if UNITY_IOS
+			m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
+#else
+			PlayGamesPlatform.Instance.RequestServerSideAccess(true, (a_oAccessToken) => {
+				this.AccessToken = a_oAccessToken.ExIsValid() ? a_oAccessToken : string.Empty;
+				m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
+			});
+#endif			// #if UNITY_IOS
+		});
 	}
 
 	/** 기록이 갱신 되었을 경우 */
