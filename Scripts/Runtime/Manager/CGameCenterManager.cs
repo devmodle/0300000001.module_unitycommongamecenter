@@ -238,10 +238,12 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 #if UNITY_IOS
 			m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
 #else
-			PlayGamesPlatform.Instance.RequestServerSideAccess(true, (a_oAccessToken) => {
-				this.AccessToken = a_oAccessToken.ExIsValid() ? a_oAccessToken : string.Empty;
+			// 로그인 되었을 경우
+			if(a_bIsSuccess) {
+				PlayGamesPlatform.Instance.RequestServerSideAccess(true, this.OnReceiveServerSideAccessResult);
+			} else {
 				m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
-			});
+			}
 #endif			// #if UNITY_IOS
 		});
 	}
@@ -257,6 +259,18 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		CFunc.ShowLog($"CGameCenterManager.OnUpdateAchievement: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);		
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_ACHIEVEMENT_CALLBACK, () => m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.UPDATE_ACHIEVEMENT)?.Invoke(this, a_bIsSuccess));
 	}
+
+#if UNITY_ANDROID
+	/** 서버 접근 결과를 수신했을 경우 */
+	private void OnReceiveServerSideAccessResult(string a_oAccessToken) {
+		CFunc.ShowLog($"CGameCenterManager.OnReceiveServerSideAccessResult: {a_oAccessToken}");
+
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_RECEIVE_SERVER_SIDE_ACCESS_RESULT_CALLBACK, () => {
+			this.AccessToken = a_oAccessToken.ExIsValid() ? a_oAccessToken : string.Empty;
+			m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, this.IsLogin);
+		});
+	}
+#endif			// #if UNITY_ANDROID
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	#endregion			// 조건부 함수
 }
