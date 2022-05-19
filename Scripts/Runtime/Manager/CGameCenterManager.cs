@@ -136,7 +136,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 
-		CFunc.Invoke(ref a_oCallback, this);
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGOUT_CALLBACK, () => CFunc.Invoke(ref a_oCallback, this));
 	}
 	
 	/** 리더보드 UI 를 출력한다 */
