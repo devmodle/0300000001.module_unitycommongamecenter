@@ -103,42 +103,6 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 #endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 	}
 
-	/** 로그인을 처리한다 */
-	public void Login(System.Action<CGameCenterManager, bool> a_oCallback) {
-		CFunc.ShowLog("CGameCenterManager.Login", KCDefine.B_LOG_COLOR_PLUGIN);
-
-#if UNITY_IOS || UNITY_ANDROID
-		// 로그인 되었을 경우
-		if(!this.IsInit || this.IsLogin) {
-			CFunc.Invoke(ref a_oCallback, this, this.IsLogin);
-		} else {
-			m_oCallbackDict.ExReplaceVal(EGameCenterCallback.LOGIN, a_oCallback);
-
-#if UNITY_IOS
-			Social.localUser.Authenticate(this.OnLogin);
-#else
-			PlayGamesPlatform.Instance.Authenticate((a_eLoginState) => this.OnLogin(a_eLoginState == SignInStatus.Success));
-#endif			// #if UNITY_IOS
-		}
-#else
-		CFunc.Invoke(ref a_oCallback, this, false);
-#endif			// #if UNITY_IOS || UNITY_ANDROID
-	}
-
-	/** 로그아웃을 처리한다 */
-	public void Logout(System.Action<CGameCenterManager> a_oCallback) {
-		CFunc.ShowLog("CGameCenterManager.Logout", KCDefine.B_LOG_COLOR_PLUGIN);
-
-#if UNITY_IOS || UNITY_ANDROID
-		// 로그인 되었을 경우
-		if(this.IsInit && this.IsLogin) {
-			// Do Something
-		}
-#endif			// #if UNITY_IOS || UNITY_ANDROID
-
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGOUT_CALLBACK, () => CFunc.Invoke(ref a_oCallback, this));
-	}
-	
 	/** 리더보드 UI 를 출력한다 */
 	public void ShowLeaderboardUIs() {
 		CFunc.ShowLog("CGameCenterManager.ShowLeaderboardUIs", KCDefine.B_LOG_COLOR_PLUGIN);
@@ -222,32 +186,14 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 #if UNITY_IOS || UNITY_ANDROID
 	/** 초기화 되었을 경우 */
 	private void OnInit() {
-		CFunc.ShowLog("CGameCenterManager.OnInit");
+		CFunc.ShowLog("CGameCenterManager.OnInit", KCDefine.B_LOG_COLOR_PLUGIN);
 
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_INIT_CALLBACK, () => {
 			this.IsInit = true;
 			m_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
 		});
 	}
-
-	/** 로그인 되었을 경우 */
-	private void OnLogin(bool a_bIsSuccess) {
-		CFunc.ShowLog($"CGameCenterManager.OnLogin: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
-
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGIN_CALLBACK, () => {
-#if UNITY_IOS
-			m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
-#else
-			// 로그인 되었을 경우
-			if(a_bIsSuccess) {
-				PlayGamesPlatform.Instance.RequestServerSideAccess(true, this.OnReceiveServerSideAccessResult);
-			} else {
-				m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
-			}
-#endif			// #if UNITY_IOS
-		});
-	}
-
+	
 	/** 기록이 갱신 되었을 경우 */
 	private void OnUpdateRecord(bool a_bIsSuccess) {
 		CFunc.ShowLog($"CGameCenterManager.OnUpdateRecord: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
@@ -263,7 +209,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 #if UNITY_ANDROID
 	/** 서버 접근 결과를 수신했을 경우 */
 	private void OnReceiveServerSideAccessResult(string a_oAccessToken) {
-		CFunc.ShowLog($"CGameCenterManager.OnReceiveServerSideAccessResult: {a_oAccessToken}");
+		CFunc.ShowLog($"CGameCenterManager.OnReceiveServerSideAccessResult: {a_oAccessToken}", KCDefine.B_LOG_COLOR_PLUGIN);
 
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_RECEIVE_SERVER_SIDE_ACCESS_RESULT_CALLBACK, () => {
 			this.AccessToken = a_oAccessToken.ExIsValid() ? a_oAccessToken : string.Empty;
