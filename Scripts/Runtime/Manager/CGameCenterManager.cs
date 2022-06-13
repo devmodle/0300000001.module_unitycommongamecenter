@@ -34,7 +34,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 	}
 
 	/** 매개 변수 */
-	public struct STParams {
+	public partial struct STParams {
 		public Dictionary<ECallback, System.Action<CGameCenterManager, bool>> m_oCallbackDict;
 	}
 
