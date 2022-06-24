@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 #if GAME_CENTER_MODULE_ENABLE
 #if UNITY_IOS || UNITY_ANDROID
