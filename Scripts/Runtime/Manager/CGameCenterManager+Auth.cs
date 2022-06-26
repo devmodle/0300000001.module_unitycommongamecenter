@@ -45,14 +45,16 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 	public void Logout(System.Action<CGameCenterManager> a_oCallback) {
 		CFunc.ShowLog("CGameCenterManager.Logout", KCDefine.B_LOG_COLOR_PLUGIN);
 
+		try {
 #if UNITY_IOS || UNITY_ANDROID
-		// 로그인 되었을 경우
-		if(this.IsInit && this.IsLogin) {
-			// Do Something
-		}
+			// 로그인 되었을 경우
+			if(this.IsInit && this.IsLogin) {
+				// Do Something
+			}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
-
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGOUT_CALLBACK, () => CFunc.Invoke(ref a_oCallback, this));
+		} finally {
+			CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGOUT_CALLBACK, () => CFunc.Invoke(ref a_oCallback, this));
+		}
 	}
 	#endregion			// 함수
 
