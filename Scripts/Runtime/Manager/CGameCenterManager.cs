@@ -179,7 +179,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 	/** 업적을 갱신한다 */
 	public void UpdateAchievement(string a_oAchievementID, double a_dblPercent, System.Action<CGameCenterManager, bool> a_oCallback) {
 		CFunc.ShowLog($"CGameCenterManager.UpdateAchievement: {a_oAchievementID}, {a_dblPercent}", KCDefine.B_LOG_COLOR_PLUGIN);
-		CAccess.Assert(a_oAchievementID.ExIsValid() && a_dblPercent.ExIsGreateEquals(KCDefine.B_VAL_0_DBL));
+		CAccess.Assert(a_oAchievementID.ExIsValid() && a_dblPercent.ExIsGreateEquals(KCDefine.B_VAL_0_REAL));
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
