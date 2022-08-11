@@ -25,7 +25,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
-		if(!m_oBoolDict[EKey.IS_INIT] || this.IsLogin) {
+		if(!m_oBoolDict.GetValueOrDefault(EKey.IS_INIT) || this.IsLogin) {
 			CFunc.Invoke(ref a_oCallback, this, this.IsLogin);
 		} else {
 			m_oCallbackDict.ExReplaceVal(EGameCenterCallback.LOGIN, a_oCallback);
@@ -48,7 +48,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		try {
 #if UNITY_IOS || UNITY_ANDROID
 			// 로그인 되었을 경우
-			if(m_oBoolDict[EKey.IS_INIT] && this.IsLogin) {
+			if(m_oBoolDict.GetValueOrDefault(EKey.IS_INIT) && this.IsLogin) {
 				// Do Something
 			}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
