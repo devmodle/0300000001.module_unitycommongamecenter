@@ -25,10 +25,10 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
-		if(!m_oBoolDict.GetValueOrDefault(EKey.IS_INIT) || this.IsLogin) {
+		if(!this.BoolDict.GetValueOrDefault(EKey.IS_INIT) || this.IsLogin) {
 			CFunc.Invoke(ref a_oCallback, this, this.IsLogin);
 		} else {
-			m_oCallbackDict.ExReplaceVal(EGameCenterCallback.LOGIN, a_oCallback);
+			this.CallbackDict.ExReplaceVal(EGameCenterCallback.LOGIN, a_oCallback);
 
 #if UNITY_IOS
 			Social.localUser.Authenticate(this.OnLogin);
@@ -48,7 +48,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		try {
 #if UNITY_IOS || UNITY_ANDROID
 			// 로그인 되었을 경우
-			if(m_oBoolDict.GetValueOrDefault(EKey.IS_INIT) && this.IsLogin) {
+			if(this.BoolDict.GetValueOrDefault(EKey.IS_INIT) && this.IsLogin) {
 				// Do Something
 			}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
@@ -66,13 +66,13 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGIN_CALLBACK, () => {
 #if UNITY_IOS
-			m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
+			this.CallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
 #else
 			// 로그인 되었을 경우
 			if(a_bIsSuccess) {
 				PlayGamesPlatform.Instance.RequestServerSideAccess(true, this.OnReceiveServerSideAccessResult);
 			} else {
-				m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
+				this.CallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
 			}
 #endif			// #if UNITY_IOS
 		});
