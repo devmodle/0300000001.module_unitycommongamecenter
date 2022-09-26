@@ -13,8 +13,8 @@ using UnityEngine.SocialPlatforms.GameCenter;
 #elif UNITY_ANDROID
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
-#endif			// #if UNITY_IOS
-#endif			// #if UNITY_IOS || UNITY_ANDROID
+#endif         // #if UNITY_IOS                          
+#endif         // #if UNITY_IOS || UNITY_ANDROID                                           
 
 /** 게임 센터 관리자 */
 public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
@@ -47,13 +47,13 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		public Dictionary<ECallback, System.Action<CGameCenterManager, bool>> m_oCallbackDict;
 	}
 
-	#region 변수
+#region 변수
 	private Dictionary<EKey, bool> m_oBoolDict = new Dictionary<EKey, bool>();
 	private Dictionary<EKey, string> m_oStrDict = new Dictionary<EKey, string>();
 	private Dictionary<EGameCenterCallback, System.Action<CGameCenterManager, bool>> m_oCallbackDict = new Dictionary<EGameCenterCallback, System.Action<CGameCenterManager, bool>>();
-	#endregion			// 변수
+#endregion         // 변수               
 
-	#region 프로퍼티
+#region 프로퍼티
 	public STParams Params { get; private set; }
 
 	public bool IsLogin {
@@ -64,7 +64,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			return m_oBoolDict.GetValueOrDefault(EKey.IS_INIT) ? PlayGamesPlatform.Instance.IsAuthenticated() : false;
 #else
 			return false;
-#endif			// #if UNITY_IOS
+#endif         // #if UNITY_IOS                          
 		}
 	}
 
@@ -76,15 +76,15 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			return this.IsLogin ? PlayGamesPlatform.Instance.GetUserId() : string.Empty;
 #else
 			return string.Empty;
-#endif			// #if UNITY_IOS
+#endif         // #if UNITY_IOS                          
 		}
 	}
 
 	public bool IsInit => m_oBoolDict.GetValueOrDefault(EKey.IS_INIT);
 	public string AccessToken => m_oStrDict.GetValueOrDefault(EKey.ACCESS_TOKEN, string.Empty);
-	#endregion			// 프로퍼티
+#endregion         // 프로퍼티                 
 
-	#region 함수
+#region 함수
 	/** 초기화 */
 	public virtual void Init(STParams a_stParams) {
 		CFunc.ShowLog("CGameCenterManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
@@ -103,16 +103,16 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			PlayGamesPlatform.DebugLogEnabled = true;
 #else
 			PlayGamesPlatform.DebugLogEnabled = false;
-#endif			// #if DEBUG || DEVELOPMENT_BUILD
+#endif         // #if DEBUG || DEVELOPMENT_BUILD                                           
 
 			PlayGamesPlatform.Activate();
-#endif			// #if UNITY_IOS
+#endif         // #if UNITY_IOS                          
 
 			this.ExLateCallFunc((a_oSender) => this.OnInit());
 		}
 #else
 		a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, false);
-#endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
+#endif         // #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)                                                              
 	}
 
 	/** 리더보드 UI 를 출력한다 */
@@ -126,9 +126,9 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			Social.ShowLeaderboardUI();
 #else
 			PlayGamesPlatform.Instance.ShowLeaderboardUI();
-#endif			// #if UNITY_IOS
+#endif         // #if UNITY_IOS                          
 		}
-#endif			// #if UNITY_IOS || UNITY_ANDROID
+#endif         // #if UNITY_IOS || UNITY_ANDROID                                           
 	}
 
 	/** 업적 UI 를 출력한다 */
@@ -142,9 +142,9 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			Social.ShowAchievementsUI();
 #else
 			PlayGamesPlatform.Instance.ShowAchievementsUI();
-#endif			// #if UNITY_IOS
+#endif         // #if UNITY_IOS                          
 		}
-#endif			// #if UNITY_IOS || UNITY_ANDROID
+#endif         // #if UNITY_IOS || UNITY_ANDROID                                           
 	}
 
 	/** 기록을 갱신한다 */
@@ -161,13 +161,13 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			Social.ReportScore(a_nRecord, a_oLeaderboardID, this.OnUpdateRecord);
 #else
 			PlayGamesPlatform.Instance.ReportScore(a_nRecord, a_oLeaderboardID, this.OnUpdateRecord);
-#endif			// #if UNITY_IOS
+#endif         // #if UNITY_IOS                          
 		} else {
 			CFunc.Invoke(ref a_oCallback, this, false);
 		}
 #else
 		CFunc.Invoke(ref a_oCallback, this, false);
-#endif			// #if UNITY_IOS || UNITY_ANDROID
+#endif         // #if UNITY_IOS || UNITY_ANDROID                                           
 	}
 
 	/** 업적을 갱신한다 */
@@ -184,26 +184,26 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			Social.ReportProgress(a_oAchievementID, a_dblPercent, this.OnUpdateAchievement);
 #else
 			PlayGamesPlatform.Instance.ReportProgress(a_oAchievementID, a_dblPercent, this.OnUpdateAchievement);
-#endif			// #if UNITY_IOS
+#endif         // #if UNITY_IOS                          
 		} else {
 			CFunc.Invoke(ref a_oCallback, this, false);
 		}
 #else
 		CFunc.Invoke(ref a_oCallback, this, false);
-#endif			// #if UNITY_IOS || UNITY_ANDROID
+#endif         // #if UNITY_IOS || UNITY_ANDROID                                           
 	}
-	#endregion			// 함수
+#endregion         // 함수               
 
-	#region 클래스 함수
+#region 클래스 함수
 	/** 매개 변수를 생성한다 */
 	public static STParams MakeParams(Dictionary<ECallback, System.Action<CGameCenterManager, bool>> a_oCallbackDict = null) {
 		return new STParams() {
 			m_oCallbackDict = a_oCallbackDict ?? new Dictionary<ECallback, System.Action<CGameCenterManager, bool>>()
 		};
 	}
-	#endregion			// 클래스 함수
+#endregion         // 클래스 함수                   
 
-	#region 조건부 함수
+#region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
 	/** 초기화 되었을 경우 */
 	private void OnInit() {
@@ -237,8 +237,8 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, this.IsLogin);
 		});
 	}
-#endif			// #if UNITY_ANDROID
-#endif			// #if UNITY_IOS || UNITY_ANDROID
-	#endregion			// 조건부 함수
+#endif         // #if UNITY_ANDROID                              
+#endif         // #if UNITY_IOS || UNITY_ANDROID                                           
+#endregion         // 조건부 함수                   
 }
-#endif			// #if GAME_CENTER_MODULE_ENABLE
+#endif         // #if GAME_CENTER_MODULE_ENABLE                                          
