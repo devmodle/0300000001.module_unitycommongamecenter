@@ -13,8 +13,8 @@ using UnityEngine.SocialPlatforms.GameCenter;
 #elif UNITY_ANDROID
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
-#endif // #if UNITY_IOS                          
-#endif // #if UNITY_IOS || UNITY_ANDROID                                           
+#endif // #if UNITY_IOS
+#endif // #if UNITY_IOS || UNITY_ANDROID
 
 /** 게임 센터 관리자 - 인증 */
 public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
@@ -34,11 +34,11 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			Social.localUser.Authenticate(this.OnLogin);
 #else
 			PlayGamesPlatform.Instance.Authenticate((a_eLoginState) => this.OnLogin(a_eLoginState == SignInStatus.Success));
-#endif // #if UNITY_IOS                          
+#endif // #if UNITY_IOS
 		}
 #else
 		CFunc.Invoke(ref a_oCallback, this, false);
-#endif // #if UNITY_IOS || UNITY_ANDROID                                           
+#endif // #if UNITY_IOS || UNITY_ANDROID
 	}
 
 	/** 로그아웃을 처리한다 */
@@ -51,12 +51,12 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			if(m_oBoolDict.GetValueOrDefault(EKey.IS_INIT) && this.IsLogin) {
 				// Do Something
 			}
-#endif // #if UNITY_IOS || UNITY_ANDROID                                           
+#endif // #if UNITY_IOS || UNITY_ANDROID
 		} finally {
 			CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGOUT_CALLBACK, () => CFunc.Invoke(ref a_oCallback, this));
 		}
 	}
-#endregion // 함수               
+#endregion // 함수
 
 #region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
@@ -74,10 +74,10 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			} else {
 				m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
 			}
-#endif // #if UNITY_IOS                          
+#endif // #if UNITY_IOS
 		});
 	}
-#endif // #if UNITY_IOS || UNITY_ANDROID                                           
-#endregion // 조건부 함수                   
+#endif // #if UNITY_IOS || UNITY_ANDROID
+#endregion // 조건부 함수
 }
-#endif // #if GAME_CENTER_MODULE_ENABLE                                          
+#endif // #if GAME_CENTER_MODULE_ENABLE
