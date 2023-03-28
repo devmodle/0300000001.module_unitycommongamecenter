@@ -200,15 +200,6 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 	}
 #endregion // 함수
 
-#region 클래스 함수
-	/** 매개 변수를 생성한다 */
-	public static STParams MakeParams(Dictionary<ECallback, System.Action<CGameCenterManager, bool>> a_oCallbackDict = null) {
-		return new STParams() {
-			m_oCallbackDict = a_oCallbackDict ?? new Dictionary<ECallback, System.Action<CGameCenterManager, bool>>()
-		};
-	}
-#endregion // 클래스 함수
-
 #region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
 	/** 초기화 되었을 경우 */
@@ -246,5 +237,17 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 #endif // #if UNITY_ANDROID
 #endif // #if UNITY_IOS || UNITY_ANDROID
 #endregion // 조건부 함수
+}
+
+/** 게임 센터 관리자 - 팩토리 */
+public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
+	#region 클래스 함수
+	/** 매개 변수를 생성한다 */
+	public static STParams MakeParams(Dictionary<ECallback, System.Action<CGameCenterManager, bool>> a_oCallbackDict = null) {
+		return new STParams() {
+			m_oCallbackDict = a_oCallbackDict ?? new Dictionary<ECallback, System.Action<CGameCenterManager, bool>>()
+		};
+	}
+	#endregion // 클래스 함수
 }
 #endif // #if GAME_CENTER_MODULE_ENABLE
