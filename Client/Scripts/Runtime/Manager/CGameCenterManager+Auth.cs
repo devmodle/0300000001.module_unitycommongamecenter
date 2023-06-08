@@ -18,7 +18,7 @@ using GooglePlayGames.BasicApi;
 
 /** 게임 센터 관리자 - 인증 */
 public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
-#region 함수
+	#region 함수
 	/** 로그인을 처리한다 */
 	public void Login(System.Action<CGameCenterManager, bool> a_oCallback) {
 		CFunc.ShowLog("CGameCenterManager.Login", KCDefine.B_LOG_COLOR_PLUGIN);
@@ -56,9 +56,9 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGOUT_CALLBACK, () => CFunc.Invoke(ref a_oCallback, this));
 		}
 	}
-#endregion // 함수
+	#endregion // 함수
 
-#region 조건부 함수
+	#region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
 	/** 로그인 되었을 경우 */
 	private void OnLogin(bool a_bIsSuccess) {
@@ -78,6 +78,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		});
 	}
 #endif // #if UNITY_IOS || UNITY_ANDROID
-#endregion // 조건부 함수
+	#endregion // 조건부 함수
 }
 #endif // #if GAME_CENTER_MODULE_ENABLE
+
