@@ -47,7 +47,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		public Dictionary<ECallback, System.Action<CGameCenterManager, bool>> m_oCallbackDict;
 	}
 
-#region 변수
+	#region 변수
 	private Dictionary<EKey, bool> m_oBoolDict = new Dictionary<EKey, bool>() {
 		[EKey.IS_INIT] = false
 	};
@@ -57,9 +57,9 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 	};
 
 	private Dictionary<EGameCenterCallback, System.Action<CGameCenterManager, bool>> m_oCallbackDict = new Dictionary<EGameCenterCallback, System.Action<CGameCenterManager, bool>>();
-#endregion // 변수
+	#endregion // 변수
 
-#region 프로퍼티
+	#region 프로퍼티
 	public STParams Params { get; private set; }
 
 	public bool IsLogin {
@@ -88,9 +88,9 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	public bool IsInit => m_oBoolDict[EKey.IS_INIT];
 	public string AccessToken => m_oStrDict[EKey.ACCESS_TOKEN];
-#endregion // 프로퍼티
+	#endregion // 프로퍼티
 
-#region 함수
+	#region 함수
 	/** 초기화 */
 	public virtual void Init(STParams a_stParams) {
 		CFunc.ShowLog("CGameCenterManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
@@ -198,9 +198,9 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		CFunc.Invoke(ref a_oCallback, this, false);
 #endif // #if UNITY_IOS || UNITY_ANDROID
 	}
-#endregion // 함수
+	#endregion // 함수
 
-#region 조건부 함수
+	#region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
 	/** 초기화 되었을 경우 */
 	private void OnInit() {
@@ -236,7 +236,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 	}
 #endif // #if UNITY_ANDROID
 #endif // #if UNITY_IOS || UNITY_ANDROID
-#endregion // 조건부 함수
+	#endregion // 조건부 함수
 }
 
 /** 게임 센터 관리자 - 팩토리 */
@@ -251,3 +251,4 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 	#endregion // 클래스 함수
 }
 #endif // #if GAME_CENTER_MODULE_ENABLE
+
