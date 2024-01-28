@@ -80,7 +80,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		CFunc.ShowLog("CGameCenterManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
-		// 초기화 되었을 경우
+		// 초기화되었을 경우
 		if(this.IsInit) {
 			a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
 		} else {
@@ -110,7 +110,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		CFunc.ShowLog("CGameCenterManager.ShowLeaderboardUIs", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if UNITY_IOS || UNITY_ANDROID
-		// 초기화 되었을 경우
+		// 초기화되었을 경우
 		if(this.IsInit) {
 #if UNITY_IOS
 			Social.ShowLeaderboardUI();
@@ -126,7 +126,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		CFunc.ShowLog("CGameCenterManager.ShowAchievementUIs", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if UNITY_IOS || UNITY_ANDROID
-		// 초기화 되었을 경우
+		// 초기화되었을 경우
 		if(this.IsInit) {
 #if UNITY_IOS
 			Social.ShowAchievementsUI();
@@ -143,7 +143,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		CAccess.Assert(a_nRecord >= KCDefine.B_VAL_0_INT && a_oLeaderboardID.ExIsValid());
 
 #if UNITY_IOS || UNITY_ANDROID
-		// 초기화 되었을 경우
+		// 초기화되었을 경우
 		if(this.IsInit) {
 			m_oCallbackDict.ExReplaceVal(EGameCenterCallback.UPDATE_RECORD, a_oCallback);
 
@@ -166,7 +166,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		CAccess.Assert(a_oAchievementID.ExIsValid() && a_dblPercent.ExIsGreatEquals(KCDefine.B_VAL_0_REAL));
 
 #if UNITY_IOS || UNITY_ANDROID
-		// 초기화 되었을 경우
+		// 초기화되었을 경우
 		if(this.IsInit) {
 			m_oCallbackDict.ExReplaceVal(EGameCenterCallback.UPDATE_ACHIEVEMENT, a_oCallback);
 
@@ -186,7 +186,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	#region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
-	/** 초기화 되었을 경우 */
+	/** 초기화되었을 경우 */
 	private void OnInit() {
 		CFunc.ShowLog("CGameCenterManager.OnInit", KCDefine.B_LOG_COLOR_PLUGIN);
 
@@ -196,13 +196,13 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		});
 	}
 	
-	/** 기록이 갱신 되었을 경우 */
+	/** 기록이 갱신되었을 경우 */
 	private void OnUpdateRecord(bool a_bIsSuccess) {
 		CFunc.ShowLog($"CGameCenterManager.OnUpdateRecord: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_RECORD_CALLBACK, () => m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.UPDATE_RECORD)?.Invoke(this, a_bIsSuccess));
 	}
 
-	/** 업적이 갱신 되었을 경우 */
+	/** 업적이 갱신되었을 경우 */
 	private void OnUpdateAchievement(bool a_bIsSuccess) {
 		CFunc.ShowLog($"CGameCenterManager.OnUpdateAchievement: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_ACHIEVEMENT_CALLBACK, () => m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.UPDATE_ACHIEVEMENT)?.Invoke(this, a_bIsSuccess));

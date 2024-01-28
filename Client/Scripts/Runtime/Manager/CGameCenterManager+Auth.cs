@@ -24,7 +24,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		CFunc.ShowLog("CGameCenterManager.Login", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if UNITY_IOS || UNITY_ANDROID
-		// 로그인 되었을 경우
+		// 로그인되었을 경우
 		if(!this.IsInit || this.IsLogin) {
 			CFunc.Invoke(ref a_oCallback, this, this.IsLogin);
 		} else {
@@ -47,7 +47,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 		try {
 #if UNITY_IOS || UNITY_ANDROID
-			// 로그인 되었을 경우
+			// 로그인되었을 경우
 			if(this.IsInit && this.IsLogin) {
 				// Do Something
 			}
@@ -60,7 +60,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 	#region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
-	/** 로그인 되었을 경우 */
+	/** 로그인되었을 경우 */
 	private void OnLogin(bool a_bIsSuccess) {
 		CFunc.ShowLog($"CGameCenterManager.OnLogin: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
 
@@ -68,7 +68,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 #if UNITY_IOS
 			m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
 #else
-			// 로그인 되었을 경우
+			// 로그인되었을 경우
 			if(a_bIsSuccess) {
 				PlayGamesPlatform.Instance.RequestServerSideAccess(true, this.OnReceiveServerSideAccessResult);
 			} else {
