@@ -82,7 +82,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 		// 초기화되었을 경우
 		if(this.IsInit) {
-			a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
+			a_stParams.m_oCallbackDict?.ExGetVal(ECallback.INIT)?.Invoke(this, this.IsInit);
 		} else {
 			this.Params = a_stParams;
 
@@ -101,7 +101,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 			this.ExLateCallFunc((a_oSender) => this.OnInit());
 		}
 #else
-		a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, false);
+		a_stParams.m_oCallbackDict?.ExGetVal(ECallback.INIT)?.Invoke(this, false);
 #endif // #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 	}
 
@@ -192,20 +192,20 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_INIT_CALLBACK, () => {
 			this.IsInit = true;
-			this.Params.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
+			this.Params.m_oCallbackDict?.ExGetVal(ECallback.INIT)?.Invoke(this, this.IsInit);
 		});
 	}
 	
 	/** 기록이 갱신되었을 경우 */
 	private void OnUpdateRecord(bool a_bIsSuccess) {
 		CFunc.ShowLog($"CGameCenterManager.OnUpdateRecord: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_RECORD_CALLBACK, () => m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.UPDATE_RECORD)?.Invoke(this, a_bIsSuccess));
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_RECORD_CALLBACK, () => m_oCallbackDict.ExGetVal(EGameCenterCallback.UPDATE_RECORD)?.Invoke(this, a_bIsSuccess));
 	}
 
 	/** 업적이 갱신되었을 경우 */
 	private void OnUpdateAchievement(bool a_bIsSuccess) {
 		CFunc.ShowLog($"CGameCenterManager.OnUpdateAchievement: {a_bIsSuccess}", KCDefine.B_LOG_COLOR_PLUGIN);
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_ACHIEVEMENT_CALLBACK, () => m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.UPDATE_ACHIEVEMENT)?.Invoke(this, a_bIsSuccess));
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_UPDATE_ACHIEVEMENT_CALLBACK, () => m_oCallbackDict.ExGetVal(EGameCenterCallback.UPDATE_ACHIEVEMENT)?.Invoke(this, a_bIsSuccess));
 	}
 
 #if UNITY_ANDROID
@@ -215,7 +215,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_RECEIVE_SERVER_SIDE_ACCESS_RESULT_CALLBACK, () => {
 			this.AccessToken = a_oAccessToken.ExIsValid() ? a_oAccessToken : string.Empty;
-			m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, this.IsLogin);
+			m_oCallbackDict.ExGetVal(EGameCenterCallback.LOGIN)?.Invoke(this, this.IsLogin);
 		});
 	}
 #endif // #if UNITY_ANDROID
