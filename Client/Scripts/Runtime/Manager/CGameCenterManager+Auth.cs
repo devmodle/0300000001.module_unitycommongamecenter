@@ -66,13 +66,13 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_GAME_CM_LOGIN_CALLBACK, () => {
 #if UNITY_IOS
-			m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
+			m_oCallbackDict.ExGetVal(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
 #else
 			// 로그인되었을 경우
 			if(a_bIsSuccess) {
 				PlayGamesPlatform.Instance.RequestServerSideAccess(true, this.OnReceiveServerSideAccessResult);
 			} else {
-				m_oCallbackDict.GetValueOrDefault(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
+				m_oCallbackDict.ExGetVal(EGameCenterCallback.LOGIN)?.Invoke(this, a_bIsSuccess);
 			}
 #endif // #if UNITY_IOS
 		});
