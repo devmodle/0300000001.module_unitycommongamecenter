@@ -140,7 +140,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 	/** 기록을 갱신한다 */
 	public void UpdateRecord(string a_oLeaderboardID, long a_nRecord, System.Action<CGameCenterManager, bool> a_oCallback) {
 		CFunc.ShowLog($"CGameCenterManager.UpdateRecord: {a_oLeaderboardID}, {a_nRecord}", KCDefine.B_LOG_COLOR_PLUGIN);
-		CAccess.Assert(a_nRecord >= KCDefine.B_VAL_0_INT && a_oLeaderboardID.ExIsValid());
+		CFunc.Assert(a_nRecord >= KCDefine.B_VAL_0_INT && a_oLeaderboardID.ExIsValid());
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화되었을 경우
@@ -163,7 +163,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 	/** 업적을 갱신한다 */
 	public void UpdateAchievement(string a_oAchievementID, double a_dblPercent, System.Action<CGameCenterManager, bool> a_oCallback) {
 		CFunc.ShowLog($"CGameCenterManager.UpdateAchievement: {a_oAchievementID}, {a_dblPercent}", KCDefine.B_LOG_COLOR_PLUGIN);
-		CAccess.Assert(a_oAchievementID.ExIsValid() && a_dblPercent.ExIsGreatEquals(KCDefine.B_VAL_0_REAL));
+		CFunc.Assert(a_oAchievementID.ExIsValid() && a_dblPercent.ExIsGreatEquals(KCDefine.B_VAL_0_REAL));
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화되었을 경우
