@@ -78,7 +78,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 		});
 	}
 #endif // #if UNITY_IOS || UNITY_ANDROID
-	#endregion // 조건부 함수
+#endregion // 조건부 함수
 }
 #endif // #if GAME_CENTER_MODULE_ENABLE
 

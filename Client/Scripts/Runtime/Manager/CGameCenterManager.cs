@@ -220,7 +220,7 @@ public partial class CGameCenterManager : CSingleton<CGameCenterManager> {
 	}
 #endif // #if UNITY_ANDROID
 #endif // #if UNITY_IOS || UNITY_ANDROID
-	#endregion // 조건부 함수
+#endregion // 조건부 함수
 }
 
 /** 게임 센터 관리자 - 팩토리 */
